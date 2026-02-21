@@ -10,13 +10,13 @@
   "lang": "es",
   "icons": [
     {
-      "src": "Image/Logo/LogoLlanerito.png",
+      "src": "Image/Logo/LogoParaCelulares.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "Image/Logo/LogoLlanerito.png",
+      "src": "Image/Logo/LogoParaCelulares.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

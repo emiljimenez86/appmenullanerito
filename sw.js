@@ -9,7 +9,8 @@ self.addEventListener('install', function (event) {
         './index.html',
         './styles.css',
         './app.js',
-        './Image/Logo/LogoLlanerito.png'
+        './Image/Logo/LogoLlanerito.png',
+        './Image/Logo/LogoParaCelulares.png'
       ]).catch(function () {});
     })
   );
