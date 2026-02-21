@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="El Llanerito">
+  <meta name="theme-color" content="#8B0000">
+  <meta name="description" content="Menú digital de El Llanerito - Carne a la llanera. El Peñol y Guatapé.">
+  <title>El Llanerito - Menú Digital | Carne a la Llanera</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="Image/Logo/LogoLlanerito.png">
+  <link rel="apple-touch-icon" href="Image/Logo/LogoLlanerito.png">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <!-- Botón Instalar App (Android) -->
+  <button type="button" id="install-btn" class="install-btn" aria-label="Instalar aplicación">
+    <span class="install-btn__icon" aria-hidden="true">↓</span> Instalar App
+  </button>
+
+  <!-- Banner instrucciones instalación (iPhone) -->
+  <div id="ios-install-banner" class="ios-install-banner" aria-hidden="true">
+    <div class="ios-install-banner__content">
+      <span class="ios-install-banner__icon" aria-hidden="true">📱</span>
+      <span>Para instalar esta app en iPhone:</span>
+    </div>
+    <ol class="ios-install-banner__steps">
+      <li><span class="ios-install-banner__num">1</span> Toca <strong>Compartir</strong> (↑ cuadrado con flecha)</li>
+      <li><span class="ios-install-banner__num">2</span> Selecciona <strong>«Agregar a inicio»</strong></li>
+      <li><span class="ios-install-banner__num">3</span> Toca <strong>«Agregar»</strong>. Listo, tendrás el menú en tu pantalla de inicio.</li>
+    </ol>
+    <button type="button" class="ios-install-banner__cerrar" id="ios-install-cerrar" aria-label="Cerrar">Cerrar</button>
+  </div>
+
+  <div class="app">
+
+    <!-- Pantalla 1: Inicio - Logo + Sucursal -->
+    <section class="pantalla pantalla--inicio" id="pantalla-inicio">
+      <h1 class="inicio__titulo">Nuestro menú</h1>
+      <div class="inicio__logo">
+        <img src="Image/Logo/LogoLlanerito.png" alt="El Llanerito - Carne a la llanera" class="logo__img" onerror="this.src='images/logo.png'; this.onerror=function(){ this.style.display='none'; this.nextElementSibling.style.display='flex'; }">
+        <div class="logo__fallback" aria-hidden="true">
+          <span class="logo__name">El Llanerito</span>
+          <span class="logo__tagline">Carne a la llanera</span>
+        </div>
+      </div>
+      <p class="inicio__eventos">En nuestras instalaciones puedes realizar todo tipo de evento tanto familiar como empresarial. Fines de semana música en vivo.</p>
+      <p class="inicio__pregunta">¿Dónde estás?</p>
+      <div class="inicio__sucursales">
+        <button type="button" class="btn-sucursal btn-sucursal--big" data-sucursal="penol">El Peñol</button>
+        <button type="button" class="btn-sucursal btn-sucursal--big" data-sucursal="guatape">Guatapé</button>
+      </div>
+    </section>
+
+    <!-- Pantalla 2: Categorías -->
+    <section class="pantalla pantalla--categorias hidden" id="pantalla-categorias">
+      <div class="pantalla__logo-mini">
+        <img src="Image/Logo/LogoLlanerito.png" alt="El Llanerito" class="logo-mini__img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="logo-mini__fallback" aria-hidden="true"><span>El Llanerito</span></div>
+      </div>
+      <header class="pantalla__header">
+        <button type="button" class="btn-back" id="btn-back-sucursal" aria-label="Cambiar sucursal">← Sucursal</button>
+        <span class="pantalla__sucursal" id="header-sucursal">El Peñol</span>
+      </header>
+      <h2 class="pantalla__titulo">Categorías</h2>
+      <div class="categoria-zona">
+        <div class="categoria-lista" id="categoria-lista">
+          <button type="button" class="categoria-btn" data-categoria="llanera">Carne a la llanera</button>
+        <button type="button" class="categoria-btn" data-categoria="plancha">Carnes a la plancha</button>
+        <button type="button" class="categoria-btn" data-categoria="pescado">Pescado</button>
+        <button type="button" class="categoria-btn" data-categoria="bandejas">Bandejas y típicos</button>
+        <button type="button" class="categoria-btn" data-categoria="entradas">Entradas</button>
+        <button type="button" class="categoria-btn" data-categoria="sopas">Sopas</button>
+        <button type="button" class="categoria-btn" data-categoria="otros">Comida rápida y más</button>
+        <button type="button" class="categoria-btn" data-categoria="pastas">Pastas</button>
+        <button type="button" class="categoria-btn" data-categoria="mexicana">Comida mexicana</button>
+        <button type="button" class="categoria-btn" data-categoria="bebidas">Bebidas</button>
+          <button type="button" class="categoria-btn" data-categoria="tragos">Tragos y vinos</button>
+        </div>
+      </div>
+      <div class="pie-info pie--categorias">
+        <section class="pie__bloque">
+          <h3 class="pie__titulo">Dirección</h3>
+          <a href="https://maps.app.goo.gl/HmUMkcwP5EYZjr758" target="_blank" rel="noopener" class="pie__direccion" id="pie-direccion">
+            <span class="pie__pin" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+            </span>
+            <span id="pie-direccion-texto">Cl. 31 #31-36, Guatapé, Antioquia</span>
+          </a>
+        </section>
+        <section class="pie__bloque">
+          <h3 class="pie__titulo">Contáctanos</h3>
+          <div class="pie__redes">
+            <a href="#" id="whatsapp-contact" class="pie__icono pie__icono--wa" aria-label="WhatsApp" title="WhatsApp" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/elllanerito" target="_blank" rel="noopener" class="pie__icono pie__icono--fb" aria-label="Facebook" title="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/llaneritoelpenol/" target="_blank" rel="noopener" class="pie__icono pie__icono--ig" id="pie-instagram" aria-label="Instagram" title="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+          </div>
+        </section>
+      </div>
+      <footer class="site-footer">
+        <p class="site-footer__copy">© 2026 El Llanerito. Todos los derechos reservados.</p>
+        <p class="site-footer__texto">Emil Jiménez Ortiz - Ingeniero de Software</p>
+      </footer>
+    </section>
+
+    <!-- Pantalla 3: Platos de la categoría -->
+    <section class="pantalla pantalla--platos hidden" id="pantalla-platos">
+      <div class="pantalla__logo-mini">
+        <img src="Image/Logo/LogoLlanerito.png" alt="El Llanerito" class="logo-mini__img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="logo-mini__fallback" aria-hidden="true"><span>El Llanerito</span></div>
+      </div>
+      <header class="pantalla__header">
+        <button type="button" class="btn-back" id="btn-back-categorias" aria-label="Volver a categorías">← Categorías</button>
+        <h2 class="pantalla__titulo pantalla__titulo--platos" id="platos-titulo"></h2>
+      </header>
+      <div class="platos-contenido" id="platos-contenido">
+        <!-- Se rellena por JS según categoría -->
+      </div>
+    </section>
+
+    <!-- Modal / sección Contáctanos -->
+    <div class="contacto-overlay hidden" id="contacto-overlay"></div>
+    <aside class="contacto-panel" id="contacto-panel">
+      <div class="contacto-panel__head">
+        <h2>Contáctanos</h2>
+        <button type="button" class="contacto-panel__cerrar" id="contacto-cerrar" aria-label="Cerrar">&times;</button>
+      </div>
+      <p class="contacto-panel__text">Síguenos y escríbenos por redes sociales ;)</p>
+      <div class="contacto-panel__redes">
+        <a href="https://www.facebook.com/elllanerito" target="_blank" rel="noopener" class="contact__link">Facebook</a>
+        <a href="https://www.instagram.com/llaneritoelpenol/" target="_blank" rel="noopener" class="contact__link" id="contacto-panel-instagram">Instagram</a>
+        <a href="#" id="whatsapp-contact-panel" class="contact__link contact__link--wa">WhatsApp</a>
+      </div>
+    </aside>
+
+    <!-- Carrito flotante (visible desde categorías y platos) -->
+    <button type="button" class="carrito-fab hidden" id="carrito-fab" aria-label="Ver carrito">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+      <span class="carrito-fab__badge" id="carrito-badge">0</span>
+    </button>
+
+    <div class="carrito-overlay" id="carrito-overlay" aria-hidden="true"></div>
+    <aside class="carrito" id="carrito-panel">
+      <div class="carrito__head">
+        <h2 class="carrito__titulo">Tu pedido</h2>
+        <button type="button" class="carrito__cerrar" id="carrito-cerrar" aria-label="Cerrar carrito">&times;</button>
+      </div>
+      <div class="carrito__sucursal" id="carrito-sucursal">Sucursal: El Peñol</div>
+      <ul class="carrito__lista" id="carrito-lista"></ul>
+      <div class="carrito__total">
+        <span>Total:</span>
+        <strong id="carrito-total">$0</strong>
+      </div>
+      <a href="#" id="whatsapp-pedido" class="btn btn--wa" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
+    </aside>
+  </div>
+
+  <!-- Datos del menú (para que JS renderice platos) -->
+  <script>
+    window.MENU_DATA = {
+      llanera: { titulo: 'Carne a la llanera', sub: null, items: [
+        { nombre: 'Llanera personal mixta', desc: 'Mixta ternera, cerdo y costilla. Acompañada de papa cocida, yuca, chimichurri, guacamole y ají picante.', penol: 35000, guatape: 39000, imagen: 'Image/Platos/Carne-llanera-personal-mixta.jpeg' },
+        { nombre: 'Llanera para dos mixta', desc: 'Mixta ternera, cerdo y costilla. Acompañada de papa cocida, yuca, chimichurri, guacamole y ají picante.', penol: 63000, guatape: 69000 },
+        { nombre: 'Llanera especial', desc: 'Ternera, cerdo, costilla y chorizo. Acompañada de papa cocida, yuca, chimichurri, guacamole y ají picante.', penol: 79000, guatape: 87000 },
+        { nombre: 'Especial personal', desc: 'Carne, costilla y porción de chorizo. Acompañada de papa cocida, yuca, chimichurri, guacamole y ají picante.', penol: 51000, guatape: 54000 },
+        { nombre: 'Sopa del día', desc: null, penol: 10000, guatape: 10000 },
+        { nombre: 'Porción de arroz', desc: null, penol: 5000, guatape: 5000 },
+        { nombre: 'Porción de ensalada', desc: null, penol: 6000, guatape: 6000 }
+      ]},
+      plancha: { titulo: 'Carnes a la plancha', sub: 'Elige 2 acompañamientos: Papa al vapor, Yuca al vapor, Papas a la francesa, Patacones, Arroz, Ensalada.', items: [
+        { nombre: 'Punta de anca 350 g', desc: null, penol: 57000, guatape: 59000 },
+        { nombre: 'Churrasco 350 g', desc: null, penol: 57000, guatape: 57000 },
+        { nombre: 'Pechuga 330 g', desc: null, penol: 43000, guatape: 43000 },
+        { nombre: 'Lomo de cerdo 350 g', desc: null, penol: 38000, guatape: 38000, soloGuatape: true }
+      ]},
+      pescado: { titulo: 'Pescado', sub: 'Elige 2 acompañamientos: Papa al vapor, Yuca al vapor, Papas a la francesa, Patacones, Arroz, Ensalada.', items: [
+        { nombre: 'Tilapia 450 g', desc: null, penol: 42000, guatape: 42000, imagen: 'Image/Platos/Tilapia.jpeg' },
+        { nombre: 'Trucha 450 g', desc: null, penol: 42000, guatape: 42000 }
+      ]},
+      bandejas: { titulo: 'Bandejas y típicos', sub: null, items: [
+        { nombre: 'Bandeja', desc: null, penol: 23000, guatape: 23000 },
+        { nombre: 'Bandeja paisa', desc: null, penol: 43000, guatape: 43000 },
+        { nombre: 'Bandeja paisa 3 pisos', desc: null, penol: 33000, guatape: 33000 },
+        { nombre: 'Cazuela de fríjoles', desc: null, penol: 38000, guatape: 38000 }
+      ]},
+      entradas: { titulo: 'Entradas', sub: null, items: [
+        { nombre: 'Patacones', desc: '4 patacones, hogao, guacamole.', penol: 10000, guatape: 10000 },
+        { nombre: 'Morcilla', desc: '½ libra, acompañado de arepa.', penol: 12000, guatape: 12000 },
+        { nombre: 'Empanadas', desc: '6 empanaditas, ají, guacamole.', penol: 7000, guatape: 7000 },
+        { nombre: 'Chorizo', desc: null, penol: 16000, guatape: 16000 },
+        { nombre: 'Chicharrón', desc: null, penol: 26000, guatape: 26000 }
+      ]},
+      sopas: { titulo: 'Sopas', sub: null, items: [
+        { nombre: 'Sancocho de gallina', desc: null, penol: 25000, guatape: 34000 },
+        { nombre: 'Ajiaco', desc: null, penol: 34000, guatape: 34000 }
+      ]},
+      otros: { titulo: 'Comida rápida y más', sub: null, items: [
+        { nombre: 'Hamburguesa sencilla', desc: null, penol: 25000, guatape: 25000 },
+        { nombre: 'Hamburguesa doble', desc: null, penol: 33000, guatape: 33000 },
+        { nombre: 'Salchipapa de la casa', desc: null, penol: 30000, guatape: 30000 },
+        { nombre: 'Sandwich de ropa vieja', desc: null, penol: 28000, guatape: 28000 },
+        { nombre: 'Alitas BBQ x 12', desc: null, penol: 32000, guatape: 32000 },
+        { nombre: 'Menú infantil', desc: 'Nuggets, salchichas, papas, jugo de cajita.', penol: 23000, guatape: 23000 }
+      ]},
+      pastas: { titulo: 'Pastas', sub: null, items: [
+        { nombre: 'Pasta Alfredo con pollo', desc: null, penol: 40000, guatape: 40000 },
+        { nombre: 'Pasta marinera', desc: null, penol: 45000, guatape: 45000 }
+      ]},
+      mexicana: { titulo: 'Comida mexicana', sub: null, items: [
+        { nombre: 'Tacos x 3', desc: null, penol: 25000, guatape: 25000 },
+        { nombre: 'Quesadilla pollo', desc: null, penol: 28000, guatape: 28000 },
+        { nombre: 'Quesadilla carne', desc: null, penol: 28000, guatape: 28000 },
+        { nombre: 'Burrito', desc: null, penol: 28000, guatape: 28000 },
+        { nombre: 'Nachos de la casa', desc: null, penol: 28000, guatape: 28000 }
+      ]},
+      bebidas: { titulo: 'Bebidas', sub: null, items: [
+        { nombre: 'Sodas saborizadas', desc: 'Frutos rojos, amarillos, lychee, maracuyá, michelada.', penol: 17000, guatape: 17000 },
+        { nombre: 'Milo', desc: null, penol: 10000, guatape: 10000 },
+        { nombre: 'Chocolate en leche', desc: null, penol: 6500, guatape: 6500 },
+        { nombre: 'Chocolate en agua', desc: null, penol: 5000, guatape: 5000 },
+        { nombre: 'Infusión', desc: null, penol: 6000, guatape: 6000 },
+        { nombre: 'Limonada natural', desc: null, penol: 10000, guatape: 10000 },
+        { nombre: 'Limonada de cereza', desc: null, penol: 12000, guatape: 12000 },
+        { nombre: 'Limonada de coco', desc: null, penol: 12000, guatape: 12000 }
+      ]},
+      tragos: { titulo: 'Tragos y vinos', sub: null, items: [
+        { nombre: 'Whisky 12 años', desc: null, penol: 28000, guatape: 28000 },
+        { nombre: 'Ron Viejo de Caldas', desc: null, penol: 12000, guatape: 12000 },
+        { nombre: 'Vodka Absolut', desc: null, penol: 15000, guatape: 15000 },
+        { nombre: 'Tequila El Jimador', desc: null, penol: 15000, guatape: 15000 },
+        { nombre: 'Aguardiente', desc: null, penol: 12000, guatape: 12000 },
+        { nombre: 'Ginebra', desc: null, penol: 12000, guatape: 12000 },
+        { nombre: 'Copa de vino', desc: null, penol: 22000, guatape: 22000 },
+        { nombre: 'Botella de vino', desc: null, penol: 70000, guatape: 70000 },
+        { nombre: 'Sangría', desc: null, penol: 45000, guatape: 45000 }
+      ]}
+    };
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>

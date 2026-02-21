@@ -1,0 +1,25 @@
+{
+  "name": "El Llanerito - Menú Digital",
+  "short_name": "El Llanerito",
+  "description": "Menú digital de El Llanerito - Carne a la llanera. El Peñol y Guatapé.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#8B0000",
+  "background_color": "#F5DEB3",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "Image/Logo/LogoLlanerito.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "Image/Logo/LogoLlanerito.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
