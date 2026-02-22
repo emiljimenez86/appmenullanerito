@@ -121,7 +121,7 @@ body {
 }
 
 .inicio__logo {
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem;
   padding: 0.25rem;
   width: 260px;
   height: 260px;
@@ -204,6 +204,7 @@ body {
   gap: 1rem;
   width: 100%;
   max-width: 280px;
+  margin: 0 auto;
 }
 
 .btn-sucursal--big {
@@ -314,7 +315,7 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  background-image: url('Image/Fondo/CarneLlaneraFondo.jpeg');
+  background-image: url('Image/Fondo/fondo4.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

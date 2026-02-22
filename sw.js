@@ -11,7 +11,7 @@ self.addEventListener('install', function (event) {
         './app.js',
         './Image/Logo/LogoLlanerito.png',
         './Image/Logo/LogoParaCelulares.png',
-        './Image/Fondo/CarneLlaneraFondo.jpeg'
+        './Image/Fondo/fondo4.png'
       ]).catch(function () {});
     })
   );
