@@ -45,6 +45,9 @@
   const $contactoCerrar = document.getElementById('contacto-cerrar');
   const $linkContacto = document.getElementById('link-contacto');
   const $whatsappContactPanel = document.getElementById('whatsapp-contact-panel');
+  const $installBtn = document.getElementById('install-btn');
+  const $iosBanner = document.getElementById('ios-install-banner');
+  var usuarioSalioDeInicio = false;
 
   function formatPrecio(n) {
     return '$' + Number(n).toLocaleString('es-CO');
@@ -82,15 +85,49 @@
     if (fbPanel) fbPanel.href = s === 'penol' ? FACEBOOK.penol : FACEBOOK.guatape;
   }
 
+  var $app = document.querySelector('.app');
   function showPantalla(pantalla) {
     $pantallaInicio.classList.add('hidden');
     $pantallaCategorias.classList.add('hidden');
     $pantallaPlatos.classList.add('hidden');
     pantalla.classList.remove('hidden');
+    if (pantalla === $pantallaInicio && $app) {
+      $app.classList.add('inicio-active');
+      $app.classList.remove('categorias-o-platos');
+    } else if (pantalla === $pantallaCategorias || pantalla === $pantallaPlatos) {
+      if ($app) {
+        $app.classList.remove('inicio-active');
+        $app.classList.add('categorias-o-platos');
+      }
+    } else if ($app) {
+      $app.classList.remove('inicio-active');
+      $app.classList.remove('categorias-o-platos');
+    }
     if (pantalla === $pantallaCategorias || pantalla === $pantallaPlatos) {
+      usuarioSalioDeInicio = true;
       $carritoFab.classList.remove('hidden');
+      if ($iosBanner) {
+        $iosBanner.classList.remove('show');
+        $iosBanner.setAttribute('aria-hidden', 'true');
+      }
+      document.body.classList.remove('install-banner-open');
+      if ($installBtn) $installBtn.classList.remove('show');
     } else {
       $carritoFab.classList.add('hidden');
+      if (pantalla === $pantallaInicio && !usuarioSalioDeInicio) {
+        var ua = navigator.userAgent || '';
+        var standalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches || document.referrer.indexOf('android-app://') === 0;
+        if (!standalone) {
+          if (/Android/i.test(ua) && $installBtn) $installBtn.classList.add('show');
+          else if ((/iPad|iPhone|iPod/.test(ua) || navigator.platform === 'iPhone' || navigator.platform === 'iPad' || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) && $iosBanner) {
+            setTimeout(function () {
+              $iosBanner.classList.add('show');
+              $iosBanner.setAttribute('aria-hidden', 'false');
+              document.body.classList.add('install-banner-open');
+            }, 400);
+          }
+        }
+      }
     }
   }
 
@@ -324,17 +361,16 @@
   renderCarrito();
   actualizarDireccionPie('penol');
   actualizarVisibilidadCategorias();
+  if ($app && !$pantallaInicio.classList.contains('hidden')) $app.classList.add('inicio-active');
 
   /* PWA: Instalar App (Android) e instrucciones iPhone */
   var installPrompt = null;
-  var $installBtn = document.getElementById('install-btn');
-  var $iosBanner = document.getElementById('ios-install-banner');
   var $iosCerrar = document.getElementById('ios-install-cerrar');
 
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
     installPrompt = e;
-    if ($installBtn) $installBtn.classList.add('show');
+    if ($installBtn && !$pantallaInicio.classList.contains('hidden')) $installBtn.classList.add('show');
   });
 
   if ($installBtn) {
@@ -348,22 +384,40 @@
     });
   }
 
-  function isIOS() {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  function isStandalone() {
+    return window.navigator.standalone === true ||
+      window.matchMedia('(display-mode: standalone)').matches ||
+      document.referrer.indexOf('android-app://') === 0;
   }
 
-  if (isIOS() && $iosBanner) {
-    var iosBannerCerrado = localStorage.getItem('llanerito-ios-banner');
-    if (!iosBannerCerrado) $iosBanner.classList.add('show');
+  var ua = navigator.userAgent || '';
+  var isAndroidDevice = /Android/i.test(ua);
+  var isAppleMobile = /iPad|iPhone|iPod/.test(ua) ||
+    navigator.platform === 'iPhone' ||
+    navigator.platform === 'iPad' ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  if (!isStandalone()) {
+    if (isAndroidDevice) {
+      if ($installBtn) $installBtn.classList.add('show');
+    } else if (isAppleMobile && $iosBanner) {
+      setTimeout(function () {
+        if (!usuarioSalioDeInicio) {
+          $iosBanner.classList.add('show');
+          $iosBanner.setAttribute('aria-hidden', 'false');
+          document.body.classList.add('install-banner-open');
+        }
+      }, 400);
+    }
   }
 
   if ($iosCerrar && $iosBanner) {
     $iosCerrar.addEventListener('click', function () {
       $iosBanner.classList.remove('show');
-      try { localStorage.setItem('llanerito-ios-banner', '1'); } catch (e) {}
+      $iosBanner.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('install-banner-open');
     });
   }
-
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(function () {});
   }

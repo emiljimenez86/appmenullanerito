@@ -10,7 +10,8 @@ self.addEventListener('install', function (event) {
         './styles.css',
         './app.js',
         './Image/Logo/LogoLlanerito.png',
-        './Image/Logo/LogoParaCelulares.png'
+        './Image/Logo/LogoParaCelulares.png',
+        './Image/Fondo/CarneLlaneraFondo.jpeg'
       ]).catch(function () {});
     })
   );
