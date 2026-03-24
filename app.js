@@ -23,6 +23,8 @@
   let sucursal = 'penol';
   const carrito = [];
   const MENU_DATA = window.MENU_DATA || {};
+  var likeUnsubs = [];
+  var firebaseDb = null;
 
   const $pantallaInicio = document.getElementById('pantalla-inicio');
   const $pantallaCategorias = document.getElementById('pantalla-categorias');
@@ -136,12 +138,84 @@
     return item[key] != null ? item[key] : item.penol;
   }
 
+  function initFirebaseLikes() {
+    if (!window.FIREBASE_LIKES_ENABLED || typeof firebase === 'undefined') return;
+    try {
+      if (!firebase.apps.length) {
+        firebase.initializeApp(window.FIREBASE_CONFIG);
+      }
+      firebaseDb = firebase.firestore();
+      if (window.FIREBASE_CONFIG.measurementId && typeof firebase.analytics === 'function') {
+        try {
+          firebase.analytics();
+        } catch (a) {
+          /* Analytics puede fallar en file:// o sin consentimiento de cookies */
+        }
+      }
+    } catch (e) {
+      console.warn('Firebase likes:', e);
+      firebaseDb = null;
+    }
+  }
+
+  function platoDocId(categoriaId, nombre) {
+    var slug = String(nombre)
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zA-Z0-9]+/g, '-')
+      .replace(/^-|-$/g, '')
+      .toLowerCase();
+    if (!slug) slug = 'plato';
+    return categoriaId + '_' + slug;
+  }
+
+  function formatLikeNum(n) {
+    var x = Number(n);
+    if (!isFinite(x) || x < 0) x = 0;
+    return Math.floor(x).toLocaleString('es-CO');
+  }
+
+  var LIKES_LS_KEY = 'llanerito-menu-likes';
+
+  function getLikedPlatoIds() {
+    try {
+      var raw = localStorage.getItem(LIKES_LS_KEY);
+      if (!raw) return [];
+      var arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function hasLikedPlato(platoId) {
+    return getLikedPlatoIds().indexOf(platoId) !== -1;
+  }
+
+  function savePlatoLiked(platoId) {
+    var ids = getLikedPlatoIds();
+    if (ids.indexOf(platoId) !== -1) return;
+    ids.push(platoId);
+    try {
+      localStorage.setItem(LIKES_LS_KEY, JSON.stringify(ids));
+    } catch (e) {}
+  }
+
+  function detachLikeListeners() {
+    likeUnsubs.forEach(function (u) {
+      if (typeof u === 'function') u();
+    });
+    likeUnsubs = [];
+  }
+
   function renderPlatos(categoriaId) {
     const cat = MENU_DATA[categoriaId];
     if (!cat) return;
     $platosTitulo.textContent = cat.titulo;
     const precioKey = sucursal === 'penol' ? 'penol' : 'guatape';
+    const likesOn = Boolean(firebaseDb && window.FIREBASE_LIKES_ENABLED);
     let html = '';
+    detachLikeListeners();
     if (cat.sub) {
       html += '<p class="section__sub">' + escapeHtml(cat.sub) + '</p>';
     }
@@ -155,6 +229,31 @@
       }
       html += '<h3 class="card__titulo">' + escapeHtml(item.nombre) + '</h3>';
       if (item.desc) html += '<p class="card__desc">' + escapeHtml(item.desc) + '</p>';
+      if (likesOn) {
+        var pid = platoDocId(categoriaId, item.nombre);
+        var likedCls = hasLikedPlato(pid) ? ' card__like-btn--active' : '';
+        var pressed = hasLikedPlato(pid) ? 'true' : 'false';
+        var heartD =
+          'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z';
+        html += '<div class="card__likes">';
+        html +=
+          '<button type="button" class="card__like-btn' +
+          likedCls +
+          '" data-plato-id="' +
+          escapeHtml(pid) +
+          '" aria-label="Me gusta" aria-pressed="' +
+          pressed +
+          '">';
+        html +=
+          '<svg class="card__like-icon" viewBox="0 0 24 24" aria-hidden="true"><path class="card__like-outline" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round" d="' +
+          heartD +
+          '"/><path class="card__like-fill" d="' +
+          heartD +
+          '" fill="currentColor"/></svg>';
+        html += '</button>';
+        html += '<span class="card__like-count" data-plato-id="' + escapeHtml(pid) + '">0</span>';
+        html += '</div>';
+      }
       html += '<div class="card__footer">';
       html += '<span class="card__precio">' + formatPrecio(precio) + '</span>';
       html += '<button type="button" class="btn btn--add" data-nombre="' + escapeHtml(item.nombre) + '" data-precio="' + precio + '"><span class="btn--add__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></span>Agregar a domicilio</button>';
@@ -162,6 +261,36 @@
     });
     html += '</div>';
     $platosContenido.innerHTML = html;
+
+    if (likesOn) {
+      $platosContenido.querySelectorAll('.card__like-btn').forEach(function (btn) {
+        var platoId = btn.getAttribute('data-plato-id');
+        var countEl = btn.parentElement && btn.parentElement.querySelector('.card__like-count');
+        var unsub = firebaseDb.collection('likes').doc(platoId).onSnapshot(function (snap) {
+          var n = snap.exists ? snap.data().count || 0 : 0;
+          if (countEl) countEl.textContent = formatLikeNum(n);
+        });
+        likeUnsubs.push(unsub);
+        btn.addEventListener('click', function () {
+          firebaseDb
+            .collection('likes')
+            .doc(platoId)
+            .set({ count: firebase.firestore.FieldValue.increment(1) }, { merge: true })
+            .then(function () {
+              savePlatoLiked(platoId);
+              btn.classList.add('card__like-btn--active');
+              btn.setAttribute('aria-pressed', 'true');
+            })
+            .catch(function (err) {
+              console.warn('Like:', err);
+            });
+          btn.classList.add('card__like-btn--pulse');
+          setTimeout(function () {
+            btn.classList.remove('card__like-btn--pulse');
+          }, 380);
+        });
+      });
+    }
 
     $platosContenido.querySelectorAll('.btn--add').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -421,4 +550,6 @@
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(function () {});
   }
+
+  initFirebaseLikes();
 })();

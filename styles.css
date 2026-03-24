@@ -683,6 +683,76 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.card__likes {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 0 0.5rem;
+}
+
+.card__like-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--granate);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.card__like-btn:active {
+  transform: scale(0.92);
+}
+
+.card__like-btn--pulse {
+  animation: like-pulse 0.38s ease;
+}
+
+@keyframes like-pulse {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.25); color: #c41e3a; }
+  100% { transform: scale(1); }
+}
+
+.card__like-icon {
+  width: 1.65rem;
+  height: 1.65rem;
+  display: block;
+}
+
+.card__like-icon .card__like-outline {
+  transition: opacity 0.22s ease;
+}
+
+.card__like-icon .card__like-fill {
+  opacity: 0;
+  transform-origin: center;
+  transform: scale(0.5);
+  transition: opacity 0.22s ease, transform 0.28s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.card__like-btn--active .card__like-outline {
+  opacity: 0;
+}
+
+.card__like-btn--active .card__like-fill {
+  opacity: 1;
+  transform: scale(1);
+  color: var(--granate);
+}
+
+.card__like-count {
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--marron);
+  letter-spacing: 0.02em;
+  min-width: 1.25rem;
+}
+
 .card__footer {
   display: flex;
   align-items: center;

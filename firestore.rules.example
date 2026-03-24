@@ -1,0 +1,14 @@
+// OPCIÓN 1 — Sin Authentication (cualquiera puede sumar likes).
+// ⚠️ Riesgo: bots o usuarios malintencionados pueden inflar números.
+// Sube reglas similares en Firebase Console → Firestore → Reglas.
+// NO uses esto en producción sensible sin otra protección (App Check, Functions, etc.).
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /likes/{platoId} {
+      allow read: if true;
+      allow create, update: if true;
+    }
+  }
+}
